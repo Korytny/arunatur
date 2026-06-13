@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { blogPosts } from "@/data/blogPosts";
 
 const BlogPost = () => {
@@ -14,16 +15,17 @@ const BlogPost = () => {
           <div className="container mx-auto px-6">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-6xl font-light text-architectural mb-8">
-                Post Not Found
+                Отчёт не найден
               </h1>
               <Link 
                 to="/blog" 
-                className="text-minimal text-foreground hover:text-muted-foreground transition-colors duration-300"
+                className="text-minimal text-foreground hover:text-accent transition-colors duration-300"
               >
-                ← BACK TO BLOG
+                ← К СПИСКУ ОТЧЁТОВ
               </Link>
             </div>
           </div>
+          <Footer />
         </div>
       </div>
     );
@@ -42,7 +44,7 @@ const BlogPost = () => {
               to="/blog" 
               className="inline-block text-minimal text-muted-foreground hover:text-foreground transition-colors duration-300 mb-12"
             >
-              ← BACK TO BLOG
+              ← К СПИСКУ ОТЧЁТОВ
             </Link>
             
             {/* Article Meta */}
@@ -66,7 +68,7 @@ const BlogPost = () => {
             </div>
             
             {/* Featured Image */}
-            <div className="w-full h-96 mb-12 overflow-hidden">
+            <div className="warm-image w-full h-96 mb-12 shadow-elegant">
               <img 
                 src={post.image} 
                 alt={post.title}
@@ -112,28 +114,28 @@ const BlogPost = () => {
                 <div className="w-16 h-16 bg-muted rounded-full"></div>
                 <div>
                   <h3 className="text-lg font-medium text-foreground">{post.author}</h3>
-                  <p className="text-muted-foreground">Architect & Writer</p>
+                  <p className="text-muted-foreground">Гости дома в Курджиново</p>
                 </div>
               </div>
             </div>
             
             {/* Related Posts */}
             <div className="mt-20">
-              <h3 className="text-2xl font-light text-architectural mb-8">Related Articles</h3>
+              <h3 className="text-2xl font-light text-architectural mb-8">Другие отчёты</h3>
               <div className="grid md:grid-cols-2 gap-8">
                 {blogPosts
-                  .filter(p => p.id !== post.id && p.category === post.category)
+                  .filter(p => p.id !== post.id)
                   .slice(0, 2)
                   .map(relatedPost => (
                     <Link key={relatedPost.id} to={`/blog/${relatedPost.id}`} className="group">
-                      <div className="w-full h-48 mb-4 overflow-hidden">
+                      <div className="warm-image w-full h-48 mb-4">
                         <img 
                           src={relatedPost.image} 
                           alt={relatedPost.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />
                       </div>
-                      <h4 className="text-lg font-light text-architectural group-hover:text-muted-foreground transition-colors duration-300 mb-2">
+                      <h4 className="text-lg font-light text-architectural group-hover:text-accent transition-colors duration-300 mb-2">
                         {relatedPost.title}
                       </h4>
                       <p className="text-minimal text-muted-foreground">{relatedPost.date} • {relatedPost.readTime}</p>
@@ -145,6 +147,7 @@ const BlogPost = () => {
           </div>
         </div>
       </article>
+      <Footer />
     </div>
   );
 };

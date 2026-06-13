@@ -2,110 +2,93 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Minimal Architecture Design System - Black & White Excellence */
+/* Kurdzhinovo — Дом в горах. Природная палитра: лес, дерево, небо */
 
 @layer base {
   :root {
-    /* Pure Architecture Palette */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
-    
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
-    
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
-    
-    /* Primary: Pure Black */
-    --primary: 0 0% 0%;
-    --primary-foreground: 0 0% 100%;
-    
-    /* Secondary: Pure White */
-    --secondary: 0 0% 100%;
-    --secondary-foreground: 0 0% 0%;
-    
-    /* Muted: Subtle Gray */
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 20%;
-    
-    /* Accent: Elegant Gray */
-    --accent: 0 0% 95%;
-    --accent-foreground: 0 0% 0%;
-    
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-    
-    --border: 0 0% 90%;
-    --input: 0 0% 95%;
-    --ring: 0 0% 0%;
+    /* Тёплая кремовая основа */
+    --background: 38 30% 96%;
+    --foreground: 160 35% 12%;
 
-    --radius: 0.5rem;
+    --card: 38 30% 98%;
+    --card-foreground: 160 35% 12%;
 
-    --sidebar-background: 0 0% 98%;
+    --popover: 38 30% 98%;
+    --popover-foreground: 160 35% 12%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Глубокий лесной зелёный #1A3B32 */
+    --primary: 165 39% 17%;
+    --primary-foreground: 38 40% 97%;
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Тёплый деревянный #8B5A2B */
+    --secondary: 28 53% 36%;
+    --secondary-foreground: 38 40% 97%;
 
-    --sidebar-primary-foreground: 0 0% 98%;
+    --muted: 38 25% 91%;
+    --muted-foreground: 160 18% 28%;
 
-    --sidebar-accent: 240 4.8% 95.9%;
+    /* Горное небо / лазурит #3A6B8C */
+    --accent: 205 41% 39%;
+    --accent-foreground: 38 40% 97%;
 
-    --sidebar-accent-foreground: 240 5.9% 10%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 38 40% 97%;
 
-    --sidebar-border: 220 13% 91%;
+    --border: 30 20% 84%;
+    --input: 30 20% 90%;
+    --ring: 165 39% 17%;
 
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    
-    /* Architecture Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 0% / 0.8), hsl(0 0% 0% / 0.4));
-    --gradient-overlay: linear-gradient(180deg, hsl(0 0% 0% / 0.9), hsl(0 0% 0% / 0.1));
-    
-    /* Elegant Shadows */
-    --shadow-architectural: 0 25px 50px -12px hsl(0 0% 0% / 0.25);
-    --shadow-elegant: 0 10px 30px -10px hsl(0 0% 0% / 0.15);
-    
-    /* Smooth Transitions */
+    --radius: 1.25rem;
+
+    --sidebar-background: 38 30% 96%;
+    --sidebar-foreground: 160 35% 12%;
+    --sidebar-primary: 165 39% 17%;
+    --sidebar-primary-foreground: 38 40% 97%;
+    --sidebar-accent: 38 25% 91%;
+    --sidebar-accent-foreground: 165 39% 17%;
+    --sidebar-border: 30 20% 84%;
+    --sidebar-ring: 205 41% 39%;
+
+    /* Природные градиенты и тени */
+    --gradient-hero: linear-gradient(180deg, hsl(165 50% 8% / 0.55), hsl(165 45% 12% / 0.25) 40%, hsl(28 45% 18% / 0.55));
+    --gradient-overlay: linear-gradient(180deg, hsl(165 45% 8% / 0.6), hsl(28 50% 20% / 0.2));
+    --gradient-warm: linear-gradient(135deg, hsl(28 53% 36% / 0.15), hsl(165 39% 17% / 0.1));
+
+    --shadow-architectural: 0 30px 60px -20px hsl(165 39% 12% / 0.35);
+    --shadow-elegant: 0 14px 36px -14px hsl(28 53% 20% / 0.25);
+
     --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     --transition-fast: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 100%;
-    
-    --popover: 0 0% 5%;
-    --popover-foreground: 0 0% 100%;
-    
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 0%;
-    
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 100%;
-    
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 60%;
-    
-    --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 100%;
-    
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-    
-    --border: 0 0% 15%;
-    --input: 0 0% 10%;
-    --ring: 0 0% 100%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 165 30% 7%;
+    --foreground: 38 30% 94%;
+
+    --card: 165 28% 10%;
+    --card-foreground: 38 30% 94%;
+
+    --popover: 165 28% 10%;
+    --popover-foreground: 38 30% 94%;
+
+    --primary: 38 35% 92%;
+    --primary-foreground: 165 39% 12%;
+
+    --secondary: 28 40% 42%;
+    --secondary-foreground: 38 30% 96%;
+
+    --muted: 165 20% 14%;
+    --muted-foreground: 38 18% 70%;
+
+    --accent: 205 50% 55%;
+    --accent-foreground: 165 39% 10%;
+
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 38 30% 96%;
+
+    --border: 165 18% 18%;
+    --input: 165 18% 16%;
+    --ring: 205 50% 55%;
   }
 }
 
@@ -116,33 +99,53 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "ss01", "ss02";
   }
-  
-  /* Architectural Typography */
+
   .text-architectural {
-    @apply tracking-[-0.02em] leading-[1.1];
+    @apply tracking-[-0.015em] leading-[1.1];
   }
-  
+
   .text-minimal {
-    @apply tracking-wide uppercase text-xs font-medium;
+    @apply tracking-[0.18em] uppercase text-xs font-medium;
   }
-  
-  /* Hero Image Overlay */
+
   .hero-overlay {
     background: var(--gradient-overlay);
   }
-  
-  /* Smooth Reveal Animation */
+
+  /* Тёплая обработка изображений: лёгкая теплота + виньетка + плёночная зернистость */
+  .warm-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+  .warm-image > img,
+  .warm-image > .bg {
+    filter: saturate(1.05) contrast(1.04) sepia(0.08) brightness(1.02);
+  }
+  .warm-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(120% 90% at 50% 50%, transparent 55%, hsl(28 50% 8% / 0.45) 100%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.85  0 0 0 0 0.7  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode: multiply;
+    opacity: 0.85;
+  }
+
   .reveal {
     @apply opacity-0 translate-y-8;
     animation: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
-  
+
   .reveal-delayed {
     @apply opacity-0 translate-y-8;
     animation: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
   }
-  
+
   @keyframes reveal {
     to {
       @apply opacity-100 translate-y-0;

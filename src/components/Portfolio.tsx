@@ -1,67 +1,76 @@
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.jpg";
 import project3 from "@/assets/project-3.jpg";
+import project4 from "@/assets/project-4.jpg";
 
 const Portfolio = () => {
-  const projects = [
+  const zones = [
     {
       image: project1,
-      title: "MINIMAL RESIDENCE",
-      location: "NEW YORK, 2024",
-      description: "A contemporary home focusing on light, space, and material honesty"
+      title: "БАНЯ НА ДРОВАХ",
+      meta: "ПАРНАЯ · 6 ЧЕЛОВЕК",
+      description:
+        "Пар с можжевельником, веники из местных трав, печь на дровах. Прогревает до самых костей после горного воздуха.",
     },
     {
       image: project2,
-      title: "CORPORATE HEADQUARTERS",
-      location: "LONDON, 2023",
-      description: "Modern office space emphasizing collaboration and natural elements"
+      title: "ЙОГА-ХОЛЛ С ПАНОРАМОЙ",
+      meta: "ТЁПЛЫЙ ПОЛ · 40 М²",
+      description:
+        "Теплый пол, маты, вид на рассвет над хребтом. Проводим утренние практики — приходите со своим ковриком или берите наш.",
     },
     {
       image: project3,
-      title: "CULTURAL CENTER",
-      location: "TOKYO, 2023",
-      description: "Public architecture that bridges tradition with contemporary design"
-    }
+      title: "СПАЛЬНИ СКАНДИ-ШАЛЕ",
+      meta: "3 КОМНАТЫ · ТЕМНОТА",
+      description:
+        "Ортопедические матрасы, хлопковое бельё, плотные шторы для полной темноты. Сон, после которого хочется жить.",
+    },
+    {
+      image: project4,
+      title: "КУПЕЛЬ ПОД ОТКРЫТЫМ НЕБОМ",
+      meta: "+4°C · ЗАКАТЫ · ЗВЁЗДЫ",
+      description:
+        "Закат, звёзды и ледяная родниковая вода для прилива энергии. Контраст с баней — лучшая перезагрузка нервной системы.",
+    },
   ];
 
   return (
-    <section id="work" className="py-32 bg-muted">
+    <section id="zones" className="py-32 bg-background">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           <div className="mb-20">
-            <h2 className="text-minimal text-muted-foreground mb-4">SELECTED WORK</h2>
+            <h2 className="text-minimal text-muted-foreground mb-4">ТЕРРИТОРИЯ ОТДЫХА</h2>
             <h3 className="text-4xl md:text-6xl font-light text-architectural">
-              Our Projects
+              Зоны дома
             </h3>
           </div>
-          
+
           <div className="space-y-32">
-            {projects.map((project, index) => (
-              <div key={index} className="group">
-                <div className="relative overflow-hidden">
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="w-full h-[70vh] object-cover transition-transform duration-700 group-hover:scale-105"
+            {zones.map((z, i) => (
+              <div
+                key={z.title}
+                className={`group grid md:grid-cols-2 gap-12 items-center ${
+                  i % 2 === 1 ? "md:[&>div:first-child]:order-2" : ""
+                }`}
+              >
+                <div className="warm-image shadow-architectural">
+                  <img
+                    src={z.image}
+                    alt={z.title}
+                    loading="lazy"
+                    className="w-full h-[60vh] object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                   />
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
-                
-                <div className="mt-8 grid md:grid-cols-3 gap-8">
-                  <div>
-                    <h4 className="text-2xl font-light text-architectural mb-2">
-                      {project.title}
-                    </h4>
-                    <p className="text-minimal text-muted-foreground">
-                      {project.location}
-                    </p>
-                  </div>
-                  
-                  <div className="md:col-span-2">
-                    <p className="text-muted-foreground leading-relaxed">
-                      {project.description}
-                    </p>
-                  </div>
+
+                <div className="space-y-6">
+                  <span className="text-minimal text-secondary">{z.meta}</span>
+                  <h4 className="text-3xl md:text-5xl font-light text-architectural">
+                    {z.title}
+                  </h4>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    {z.description}
+                  </p>
                 </div>
               </div>
             ))}
