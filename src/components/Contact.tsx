@@ -1,3 +1,5 @@
+import BookingForm from "@/components/BookingForm";
+
 const Contact = () => {
   return (
     <section id="contact" className="py-32 bg-muted/40">
@@ -52,32 +54,8 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="space-y-8">
-              <div>
-                <h4 className="text-minimal text-muted-foreground mb-6">ПОЛЕЗНОЕ ГОСТЯМ</h4>
-                <div className="space-y-4">
-                  <a href="#" className="block text-xl hover:text-accent transition-colors duration-300">
-                    Инструкция как доехать
-                  </a>
-                  <a href="#" className="block text-xl hover:text-accent transition-colors duration-300">
-                    Памятка гостя
-                  </a>
-                  <a href="#" className="block text-xl hover:text-accent transition-colors duration-300">
-                    Правила бронирования
-                  </a>
-                  <a href="#" className="block text-xl hover:text-accent transition-colors duration-300">
-                    Карта маршрутов: водопады и дольмены
-                  </a>
-                </div>
-              </div>
-
-              <div className="pt-12 border-t border-border">
-                <p className="text-muted-foreground leading-relaxed">
-                  Напишите, на какие даты планируете, сколько вас и нужна ли встреча
-                  в Минеральных Водах. Мы ответим в течение пары часов — и расскажем
-                  про погоду, баню и куда сходить за местным сыром.
-                </p>
-              </div>
+            <div>
+              <BookingForm />
             </div>
           </div>
         </div>
