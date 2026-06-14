@@ -24,8 +24,11 @@ export type Database = {
           guest_name: string
           guests_count: number
           id: string
+          needs_excursions: boolean
+          needs_meals: boolean
           phone: string
           status: string
+          tariff: string
           updated_at: string
         }
         Insert: {
@@ -37,8 +40,11 @@ export type Database = {
           guest_name: string
           guests_count?: number
           id?: string
+          needs_excursions?: boolean
+          needs_meals?: boolean
           phone: string
           status?: string
+          tariff?: string
           updated_at?: string
         }
         Update: {
@@ -50,8 +56,11 @@ export type Database = {
           guest_name?: string
           guests_count?: number
           id?: string
+          needs_excursions?: boolean
+          needs_meals?: boolean
           phone?: string
           status?: string
+          tariff?: string
           updated_at?: string
         }
         Relationships: []

@@ -6,6 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const bookingSchema = z
   .object({
@@ -21,6 +29,9 @@ const bookingSchema = z
     check_in: z.string().min(1, "Выберите дату заезда"),
     check_out: z.string().min(1, "Выберите дату выезда"),
     guests_count: z.coerce.number().int().min(1).max(20),
+    tariff: z.enum(["econom", "active", "premium"]),
+    needs_excursions: z.boolean(),
+    needs_meals: z.boolean(),
     comment: z.string().trim().max(1000).optional().or(z.literal("")),
   })
   .refine((v) => new Date(v.check_out) > new Date(v.check_in), {
@@ -39,10 +50,14 @@ const BookingForm = () => {
     check_in: "",
     check_out: "",
     guests_count: "2",
+    tariff: "econom" as "econom" | "active" | "premium",
+    needs_excursions: false,
+    needs_meals: false,
     comment: "",
   });
 
-  const update = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
+  const update = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
+    setForm((f) => ({ ...f, [k]: v }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,6 +79,9 @@ const BookingForm = () => {
       check_in: parsed.data.check_in,
       check_out: parsed.data.check_out,
       guests_count: parsed.data.guests_count,
+      tariff: parsed.data.tariff,
+      needs_excursions: parsed.data.needs_excursions,
+      needs_meals: parsed.data.needs_meals,
       comment: parsed.data.comment || null,
     });
     setLoading(false);
@@ -88,6 +106,9 @@ const BookingForm = () => {
       check_in: "",
       check_out: "",
       guests_count: "2",
+      tariff: "econom",
+      needs_excursions: false,
+      needs_meals: false,
       comment: "",
     });
   };
@@ -176,6 +197,52 @@ const BookingForm = () => {
             required
           />
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="tariff">Тариф</Label>
+        <Select
+          value={form.tariff}
+          onValueChange={(v) => update("tariff", v as typeof form.tariff)}
+        >
+          <SelectTrigger id="tariff">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="econom">Эконом — только проживание</SelectItem>
+            <SelectItem value="active">Актив — проживание + экскурсии</SelectItem>
+            <SelectItem value="premium">Премиум — всё включено</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-3 rounded-2xl border border-border p-4">
+        <label className="flex items-start gap-3 cursor-pointer">
+          <Checkbox
+            checked={form.needs_excursions}
+            onCheckedChange={(v) => update("needs_excursions", v === true)}
+            className="mt-1"
+          />
+          <div>
+            <div className="text-sm font-medium">Нужны экскурсии</div>
+            <div className="text-xs text-muted-foreground">
+              Водопады, пещеры, пешие маршруты с гидом
+            </div>
+          </div>
+        </label>
+        <label className="flex items-start gap-3 cursor-pointer">
+          <Checkbox
+            checked={form.needs_meals}
+            onCheckedChange={(v) => update("needs_meals", v === true)}
+            className="mt-1"
+          />
+          <div>
+            <div className="text-sm font-medium">Нужно питание</div>
+            <div className="text-xs text-muted-foreground">
+              Домашние завтраки, обеды и ужины
+            </div>
+          </div>
+        </label>
       </div>
 
       <div className="space-y-2">
