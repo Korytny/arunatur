@@ -3,9 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const links = [
-  { href: "/work", label: "ЗОНЫ ДОМА" },
-  { href: "/services", label: "ПРЕИМУЩЕСТВА" },
-  { href: "/about", label: "ФИЛОСОФИЯ" },
+  { href: "/routes", label: "МАРШРУТЫ" },
   { href: "/blog", label: "ОТЧЁТЫ ГОСТЕЙ" },
   { href: "/contact", label: "КОНТАКТЫ" },
 ];
@@ -17,7 +15,7 @@ const Navigation = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/85 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         <a href="/" className="text-minimal text-foreground">
-          ДОМ · КУРДЖИНОВО
+          АРУНА - ТУР
         </a>
 
         <div className="hidden md:flex items-center space-x-10">
@@ -36,7 +34,7 @@ const Navigation = () => {
           <ThemeToggle />
           <a
             href="/contact"
-            className="text-minimal px-4 py-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300"
+            className="text-sm font-semibold uppercase tracking-widest px-4 py-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300"
           >
             ЗАБРОНИРОВАТЬ
           </a>
@@ -68,7 +66,7 @@ const Navigation = () => {
               <ThemeToggle />
               <a
                 href="/contact"
-                className="text-minimal px-4 py-2 rounded-full bg-primary text-primary-foreground"
+                className="text-sm font-semibold uppercase tracking-widest px-4 py-2 rounded-full bg-primary text-primary-foreground"
               >
                 ЗАБРОНИРОВАТЬ
               </a>

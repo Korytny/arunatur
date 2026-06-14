@@ -1,4 +1,17 @@
 import BookingForm from "@/components/BookingForm";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+const icon = L.icon({
+  iconUrl: "/marker-icon.png",
+  iconRetinaUrl: "/marker-icon-2x.png",
+  shadowUrl: "/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
+
+const CENTER: [number, number] = [43.9889, 40.9569];
 
 const Contact = () => {
   return (
@@ -18,20 +31,20 @@ const Contact = () => {
                 <div>
                   <h4 className="text-minimal text-muted-foreground mb-2">TELEGRAM / WHATSAPP</h4>
                   <a
-                    href="https://wa.me/79280000000"
+                    href="https://wa.me/89150255285"
                     className="text-xl hover:text-accent transition-colors duration-300"
                   >
-                    +7 (928) 000-00-00
+                    +8-915-025-52-85
                   </a>
                 </div>
 
                 <div>
                   <h4 className="text-minimal text-muted-foreground mb-2">ПОЧТА</h4>
                   <a
-                    href="mailto:hello@kurdzhinovo-house.ru"
+                    href="mailto:hello@аруна-тур.рф"
                     className="text-xl hover:text-accent transition-colors duration-300"
                   >
-                    hello@kurdzhinovo-house.ru
+                    hello@аруна-тур.рф
                   </a>
                 </div>
 
@@ -42,14 +55,23 @@ const Contact = () => {
                     <br />
                     ул. Лесная, 12
                   </address>
-                  <a
-                    href="https://yandex.ru/maps/?text=Курджиново"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-block mt-3 text-minimal text-accent hover:text-primary transition-colors"
-                  >
-                    ОТКРЫТЬ В ЯНДЕКС.КАРТАХ →
-                  </a>
+                  <div className="mt-3 rounded-xl overflow-hidden border border-border h-[200px]">
+                    <MapContainer
+                      center={CENTER}
+                      zoom={14}
+                      zoomControl={false}
+                      dragging={false}
+                      scrollWheelZoom={false}
+                      doubleClickZoom={false}
+                      style={{ height: "100%", width: "100%" }}
+                    >
+                      <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      />
+                      <Marker position={CENTER} icon={icon} />
+                    </MapContainer>
+                  </div>
                 </div>
               </div>
             </div>

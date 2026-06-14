@@ -4,7 +4,7 @@ const Footer = () => {
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-4 gap-10">
           <div>
-            <div className="text-minimal mb-4">ДОМ · КУРДЖИНОВО</div>
+            <div className="text-minimal mb-4">АРУНА - ТУР</div>
             <p className="text-primary-foreground/80 text-sm leading-relaxed">
               Сруб у леса с баней, купелью и пространством для йоги. Горы Карачаево-Черкесии.
             </p>
@@ -22,8 +22,8 @@ const Footer = () => {
           <div>
             <div className="text-minimal mb-4 text-primary-foreground/70">КОНТАКТЫ</div>
             <ul className="space-y-2 text-sm">
-              <li><a href="tel:+79280000000" className="hover:text-accent transition-colors">+7 (928) 000-00-00</a></li>
-              <li><a href="mailto:hello@kurdzhinovo-house.ru" className="hover:text-accent transition-colors">hello@kurdzhinovo-house.ru</a></li>
+              <li><a href="tel:+89150255285" className="hover:text-accent transition-colors">+8-915-025-52-85</a></li>
+              <li><a href="mailto:hello@аруна-тур.рф" className="hover:text-accent transition-colors">hello@аруна-тур.рф</a></li>
               <li>
                 <a
                   href="https://yandex.ru/maps/?text=Курджиново"

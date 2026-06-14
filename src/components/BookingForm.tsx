@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DatePicker } from "@/components/ui/date-picker";
 
 const bookingSchema = z
   .object({
@@ -154,24 +155,22 @@ const BookingForm = () => {
       <div className="grid sm:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label htmlFor="check_in">Заезд</Label>
-          <Input
+          <DatePicker
             id="check_in"
-            type="date"
-            min={today}
             value={form.check_in}
-            onChange={(e) => update("check_in", e.target.value)}
-            required
+            onChange={(v) => update("check_in", v)}
+            minDate={today}
+            placeholder="Дата заезда"
           />
         </div>
         <div className="space-y-2">
           <Label htmlFor="check_out">Выезд</Label>
-          <Input
+          <DatePicker
             id="check_out"
-            type="date"
-            min={form.check_in || today}
             value={form.check_out}
-            onChange={(e) => update("check_out", e.target.value)}
-            required
+            onChange={(v) => update("check_out", v)}
+            minDate={form.check_in || today}
+            placeholder="Дата выезда"
           />
         </div>
         <div className="space-y-2">
@@ -232,7 +231,7 @@ const BookingForm = () => {
       <Button
         type="submit"
         disabled={loading}
-        className="w-full rounded-full text-minimal py-6"
+        className="w-full rounded-full py-6 text-sm font-semibold uppercase tracking-widest"
       >
         {loading ? "ОТПРАВЛЯЕМ…" : "ОТПРАВИТЬ ЗАЯВКУ"}
       </Button>
