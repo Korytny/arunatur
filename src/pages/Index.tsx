@@ -3,6 +3,8 @@ import Hero from "@/components/Hero";
 import { WeatherWidget } from "@/components/WeatherWidget";
 import Services from "@/components/Services";
 import About from "@/components/About";
+import HostCarousel from "@/components/HostCarousel";
+import HouseRules from "@/components/HouseRules";
 import Portfolio from "@/components/Portfolio";
 import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
@@ -17,6 +19,8 @@ const Index = () => {
       <WeatherWidget />
       <Services />
       <About />
+      <HostCarousel />
+      <HouseRules />
       <Portfolio />
       <Pricing />
       <FAQ />
