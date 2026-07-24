@@ -1,1 +1,7 @@
 project_id = "xroumvqauakbdnafkzkv"
+
+[functions]
+  include = ["telegram-booking-notify"]
+
+[auth]
+  enabled = true

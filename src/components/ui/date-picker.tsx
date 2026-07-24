@@ -14,11 +14,26 @@ interface DatePickerProps {
   placeholder?: string;
   id?: string;
   required?: boolean;
+  /** Dates that are already booked and should be disabled */
+  disabledDates?: Date[];
 }
 
-const DatePicker = ({ value, onChange, minDate, placeholder, id, required }: DatePickerProps) => {
+const DatePicker = ({ value, onChange, minDate, placeholder, id, required, disabledDates }: DatePickerProps) => {
   const date = value ? new Date(value) : undefined;
   const min = minDate ? new Date(minDate) : undefined;
+
+  // Combine minDate and disabledDates into a single disabled function for react-day-picker
+  const isDisabled = React.useCallback(
+    (day: Date) => {
+      if (min && day < min) return true;
+      if (disabledDates) {
+        const dayStr = format(day, "yyyy-MM-dd");
+        return disabledDates.some((d) => format(d, "yyyy-MM-dd") === dayStr);
+      }
+      return false;
+    },
+    [min, disabledDates],
+  );
 
   return (
     <Popover>
@@ -49,6 +64,7 @@ const DatePicker = ({ value, onChange, minDate, placeholder, id, required }: Dat
             }
           }}
           fromDate={min}
+          disabled={isDisabled}
           initialFocus
         />
       </PopoverContent>

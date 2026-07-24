@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
+import { format, eachDayOfInterval, parseISO } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -34,8 +36,40 @@ const bookingSchema = z
 
 const today = new Date().toISOString().slice(0, 10);
 
+/** Expand booked range into individual disabled dates */
+function expandBookedDates(rows: { check_in: string; check_out: string }[]): Date[] {
+  const set = new Set<string>();
+  for (const r of rows) {
+    const start = parseISO(r.check_in);
+    const end = parseISO(r.check_out);
+    // disable check-out day too so guests can't overlap
+    const days = eachDayOfInterval({ start, end });
+    for (const d of days) {
+      set.add(format(d, "yyyy-MM-dd"));
+    }
+  }
+  return [...set].map((s) => parseISO(s));
+}
+
 const BookingForm = () => {
   const [loading, setLoading] = useState(false);
+
+  // Fetch confirmed bookings to show unavailable dates
+  const { data: bookedDates } = useQuery({
+    queryKey: ["booked-dates"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("bookings")
+        .select("check_in, check_out")
+        .in("status", ["confirmed", "approved"]);
+      if (error) throw error;
+      return expandBookedDates(data ?? []);
+    },
+    refetchInterval: 60_000, // refresh every minute
+    staleTime: 30_000,
+  });
+
+  const disabledDates = useMemo(() => bookedDates ?? [], [bookedDates]);
   const [form, setForm] = useState({
     guest_name: "",
     phone: "",
@@ -160,6 +194,7 @@ const BookingForm = () => {
             value={form.check_in}
             onChange={(v) => update("check_in", v)}
             minDate={today}
+            disabledDates={disabledDates}
             placeholder="Дата заезда"
           />
         </div>
@@ -170,6 +205,7 @@ const BookingForm = () => {
             value={form.check_out}
             onChange={(v) => update("check_out", v)}
             minDate={form.check_in || today}
+            disabledDates={disabledDates}
             placeholder="Дата выезда"
           />
         </div>
