@@ -59,7 +59,7 @@ const Footer = () => {
                   rel="noreferrer"
                   className="hover:text-accent transition-colors"
                 >
-                  КЧР, Курджиново, ул. Лесная, 12
+                  КЧР, Курджиново, Подгорная улица, 73
                 </a>
               </li>
             </ul>

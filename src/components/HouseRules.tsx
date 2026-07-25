@@ -54,7 +54,7 @@ const rules = [
 
 const HouseRules = () => {
   return (
-    <section id="rules" className="py-32 bg-muted/40 bg-section-3">
+    <section id="rules" className="py-32 bg-muted/40 bg-section-3 hidden md:block">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">

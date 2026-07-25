@@ -19,27 +19,27 @@ const tariffs = [
     name: "ДОМ",
     price: "2 500",
     unit: "₽ / сутки",
-    tagline: "Сруб у леса целиком",
+    tagline: "Дом у леса целиком",
     features: [
       "Дом до 8 гостей",
       "Wi-Fi, посуда, бельё",
       "Кухня-гостиная с печью",
       "Парковка во дворе",
-      "Помощь хозяина 24/7",
+      "Помощь помощника 24/7",
     ],
     accent: true,
   },
   {
     id: "excursions",
     name: "ЭКСКУРСИИ",
-    price: "от 3 000",
-    unit: "₽ / человек",
+    price: "от 5 000",
+    unit: "₽",
     tagline: "Горы, водопады, дольмены",
     features: [
       "Пешие маршруты с гидом",
-      "Водопады и пещеры",
-      "Трансфер до старта",
-      "Индивидуальный график",
+      "С AI-помощником",
+      "Аренда вездехода — 10 000 ₽ / 5 часов",
+      "Трансфер до/от старта/финиша",
       "Дети до 12 лет — 50%",
     ],
     accent: false,
@@ -86,15 +86,17 @@ const Pricing = () => {
                   </div>
 
                   <div className="mb-6">
-                    <span className="text-5xl font-light">{t.price}</span>
-                    <span
-                      className={`block text-sm mt-1 ${
-                        t.accent
-                          ? "text-primary-foreground/70"
-                          : "text-muted-foreground"
-                      }`}
-                    >
-                      {t.unit}
+                    <span className="text-5xl font-light">
+                      {t.price}
+                      <span
+                        className={`text-lg font-light ml-1 ${
+                          t.accent
+                            ? "text-primary-foreground/70"
+                            : "text-muted-foreground"
+                        }`}
+                      >
+                        {t.unit}
+                      </span>
                     </span>
                   </div>
 

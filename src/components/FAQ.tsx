@@ -1,9 +1,12 @@
+import { useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+
+const FAQ_ITEMS_SHOWN = 4;
 
 const faqItems = [
   {
@@ -69,6 +72,9 @@ const faqItems = [
 ];
 
 const FAQ = () => {
+  const [showAll, setShowAll] = useState(false);
+  const visibleItems = showAll ? faqItems : faqItems.slice(0, FAQ_ITEMS_SHOWN);
+
   return (
     <section id="faq" className="py-32 bg-muted/40 bg-section-4">
       <div className="container mx-auto px-6">
@@ -87,7 +93,7 @@ const FAQ = () => {
           </div>
 
           <Accordion type="single" collapsible className="space-y-3">
-            {faqItems.map((item) => (
+            {visibleItems.map((item) => (
               <AccordionItem
                 key={item.id}
                 value={item.id}
@@ -102,6 +108,17 @@ const FAQ = () => {
               </AccordionItem>
             ))}
           </Accordion>
+
+          {!showAll && faqItems.length > FAQ_ITEMS_SHOWN && (
+            <div className="text-center mt-8">
+              <button
+                onClick={() => setShowAll(true)}
+                className="text-minimal px-8 py-4 rounded-full border border-border text-foreground hover:bg-accent/10 transition-colors duration-300"
+              >
+                Показать все вопросы ({faqItems.length})
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>

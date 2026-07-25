@@ -6,7 +6,7 @@ import routes1 from "@/assets/routes1.jpg";
 const items = [
   {
     imgUrl: project1,
-    title: "СВОЙ СРУБ И ТИШИНА",
+    title: "СВОЙ ДОМ И ТИШИНА",
     description:
       "Никаких соседей за стеной. Только лес, горы и звуки реки. Дом стоит обособленно — вы хозяева территории.",
   },
@@ -38,7 +38,7 @@ const Services = () => {
           <div className="mb-20">
             <h2 className="text-minimal text-muted-foreground mb-4">ПОЧЕМУ ЗДЕСЬ</h2>
             <h3 className="text-4xl md:text-6xl font-light text-architectural">
-              Почему выбирают этот дом
+              Почему этот дом
             </h3>
           </div>
 

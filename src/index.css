@@ -197,7 +197,7 @@
   z-index: 45 !important;
 }
 
-/* Скрываем Leaflet из атрибуции карты — оставляем только OpenStreetMap */
-.leaflet-control-attribution a[href*="leafletjs"] {
+/* Скрываем атрибуцию карты полностью */
+.leaflet-control-attribution {
   display: none;
 }

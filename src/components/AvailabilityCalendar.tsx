@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useState } from "react";
+import { useMemo, useCallback, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format, parseISO, isSameDay, addDays } from "date-fns";
 import { ru } from "date-fns/locale";
@@ -32,6 +32,14 @@ interface Props {
 
 const AvailabilityCalendar = ({ onDateSelect }: Props) => {
   const [selectedRange, setSelectedRange] = useState<{ from: Date; to: Date } | null>(null);
+  const [months, setMonths] = useState(4);
+
+  useEffect(() => {
+    const check = () => setMonths(window.innerWidth < 768 ? 1 : 4);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const { data: ranges } = useQuery({
     queryKey: ["booked-ranges"],
@@ -109,7 +117,7 @@ const AvailabilityCalendar = ({ onDateSelect }: Props) => {
         <DayPicker
           mode="single"
           onSelect={handleSelect}
-          numberOfMonths={4}
+          numberOfMonths={months}
           locale={ru}
           fromDate={today}
           modifiers={{
@@ -126,7 +134,7 @@ const AvailabilityCalendar = ({ onDateSelect }: Props) => {
           }}
           disabled={isDisabled}
           classNames={{
-            months: "grid grid-cols-2 gap-4",
+            months: "grid grid-cols-1 md:grid-cols-2 gap-4",
             month: "space-y-4",
             caption: "flex justify-center pt-1 relative items-center",
             caption_label: "text-sm font-medium",

@@ -4,6 +4,7 @@ import InfrastructureLayer from "@/components/InfrastructureLayer";
 import LandmarksLayer from "@/components/LandmarksLayer";
 import RoutesLayer from "@/components/RoutesLayer";
 import LayerControl from "@/components/LayerControl";
+import ScrollWheelHandler from "@/components/ScrollWheelHandler";
 
 const CENTER: [number, number] = [43.9889, 40.9569];
 
@@ -30,7 +31,8 @@ const MapSection = () => {
             <MapContainer
               center={CENTER}
               zoom={14}
-              scrollWheelZoom
+              scrollWheelZoom={false}
+              zoomControl={false}
               style={{ height: "100%", width: "100%" }}
             >
               <TileLayer
@@ -40,6 +42,7 @@ const MapSection = () => {
               <InfrastructureLayer />
               <LandmarksLayer />
               <RoutesLayer />
+              <ScrollWheelHandler />
               <LayerControl />
             </MapContainer>
           </div>
