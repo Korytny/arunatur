@@ -42,7 +42,7 @@ const LandmarksLayer = () => {
   const map = useMap();
 
   useEffect(() => {
-    const group = L.layerGroup().addTo(map);
+    const group = L.featureGroup().addTo(map);
 
     landmarkPoints.forEach((point) => {
       const meta = typeMeta[point.type];
@@ -51,19 +51,41 @@ const LandmarksLayer = () => {
       });
 
       const popupHtml = `
-        <div style="font-size:13px;font-family:sans-serif;max-width:200px">
-          <p style="font-weight:600;color:#333;margin:0 0 4px">${point.name}</p>
-          <p style="font-size:12px;color:#666;margin:0 0 4px">${meta.label}</p>
+        <div style="font-size:13px;font-family:sans-serif;max-width:220px;line-height:1.4">
+          <p style="font-weight:700;color:#1a1a1a;margin:0 0 4px;font-size:14px">${point.name}</p>
+          <p style="font-size:12px;color:#666;margin:0 0 4px"><b>${meta.label}</b></p>
           ${
             point.description
-              ? `<p style="font-size:12px;color:#888;margin:0">${point.description}</p>`
+              ? `<p style="font-size:12px;color:#555;margin:0">${point.description}</p>`
               : ""
           }
         </div>
       `;
       marker.bindPopup(popupHtml);
+      marker.bindTooltip(point.name, {
+        direction: "top",
+        offset: [0, -24],
+        opacity: 0.9,
+      });
       group.addLayer(marker);
     });
+
+    // Зум на все достопримечательности при загрузке
+    const bounds = group.getBounds();
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+    }
+
+    // При включении слоя через контроль — зумим на все маркеры
+    const onOverlayAdd = (e: L.LayersControlEvent) => {
+      if (e.name === "Достопримечательности" && e.layer === group) {
+        const bounds = group.getBounds();
+        if (bounds.isValid()) {
+          map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+        }
+      }
+    };
+    map.on("overlayadd", onOverlayAdd);
 
     if (typeof window !== "undefined") {
       (window as any).layers ??= {};
@@ -75,6 +97,7 @@ const LandmarksLayer = () => {
 
     return () => {
       group.remove();
+      map.off("overlayadd", onOverlayAdd);
     };
   }, [map]);
 

@@ -46,7 +46,7 @@ const InfrastructureLayer = () => {
   const map = useMap();
 
   useEffect(() => {
-    const group = L.layerGroup().addTo(map);
+    const group = L.featureGroup();
 
     infrastructurePoints.forEach((point) => {
       const meta = typeMeta[point.type];
@@ -81,6 +81,14 @@ const InfrastructureLayer = () => {
         `<div style="font-size:13px;font-family:sans-serif">${popupLines.join("")}</div>`,
       );
       group.addLayer(marker);
+    });
+
+    // Зум на всю инфраструктуру при включении слоя
+    group.on("add", () => {
+      const b = group.getBounds();
+      if (b.isValid()) {
+        map.fitBounds(b, { padding: [50, 50], maxZoom: 15 });
+      }
     });
 
     if (typeof window !== "undefined") {

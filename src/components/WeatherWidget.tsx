@@ -12,6 +12,14 @@ import {
   Wind,
   Thermometer,
 } from "lucide-react";
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from "recharts";
 
 // Open-Meteo API — free, no API key required
 const LAT = 43.9889;
@@ -55,7 +63,7 @@ async function fetchWeather(): Promise<OpenMeteoResponse> {
     current: "temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m",
     daily: "temperature_2m_max,temperature_2m_min,weather_code",
     timezone: "auto",
-    forecast_days: "3",
+    forecast_days: "16",
   });
   const res = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
   if (!res.ok) throw new Error("Weather fetch failed");
@@ -89,7 +97,7 @@ export function WeatherWidget() {
             <div className="mb-16">
               <h2 className="text-minimal text-muted-foreground mb-4">ПОГОДА В КУРДЖИНОВО</h2>
               <h3 className="text-4xl md:text-6xl font-light text-architectural">
-                Прогноз на сегодня
+                Прогноз на {new Date().toLocaleDateString("ru-RU", { day: "numeric", month: "long" })}
               </h3>
             </div>
             <div className="grid md:grid-cols-[1fr_auto] gap-8 items-start">
@@ -139,73 +147,118 @@ export function WeatherWidget() {
             </h3>
           </div>
 
-          <div className="grid md:grid-cols-[1fr_auto] gap-8 items-start">
+          <div className="space-y-6">
             {/* Current weather card */}
-            <div className="bg-card rounded-3xl p-10 shadow-elegant border border-border/50">
-              <div className="flex items-center gap-6">
+            <div className="bg-card rounded-2xl p-6 shadow-elegant border border-border/50">
+              <div className="flex items-center gap-4">
                 <div className="text-primary">
                   {icon}
                 </div>
                 <div>
-                  <div className="text-6xl font-light text-architectural">
+                  <div className="text-4xl font-light text-architectural">
                     {temp}°
                   </div>
-                  <div className="text-muted-foreground text-lg">
+                  <div className="text-muted-foreground text-sm">
                     {label}
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-6 mt-8">
-                <div className="flex items-center gap-3 bg-muted/30 rounded-2xl px-5 py-4">
-                  <Thermometer className="w-5 h-5 text-muted-foreground" />
+              <div className="grid grid-cols-3 gap-3 mt-5">
+                <div className="flex items-center gap-2 bg-muted/30 rounded-xl px-3 py-3">
+                  <Thermometer className="w-4 h-4 text-muted-foreground" />
                   <div>
-                    <div className="text-xs text-muted-foreground text-minimal">Ощущается</div>
-                    <div className="text-lg font-medium">{feelsLike}°</div>
+                    <div className="text-[10px] text-muted-foreground text-minimal">Ощущается</div>
+                    <div className="text-base font-medium">{feelsLike}°</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 bg-muted/30 rounded-2xl px-5 py-4">
-                  <Droplets className="w-5 h-5 text-muted-foreground" />
+                <div className="flex items-center gap-2 bg-muted/30 rounded-xl px-3 py-3">
+                  <Droplets className="w-4 h-4 text-muted-foreground" />
                   <div>
-                    <div className="text-xs text-muted-foreground text-minimal">Влажность</div>
-                    <div className="text-lg font-medium">{humidity}%</div>
+                    <div className="text-[10px] text-muted-foreground text-minimal">Влажность</div>
+                    <div className="text-base font-medium">{humidity}%</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 bg-muted/30 rounded-2xl px-5 py-4">
-                  <Wind className="w-5 h-5 text-muted-foreground" />
+                <div className="flex items-center gap-2 bg-muted/30 rounded-xl px-3 py-3">
+                  <Wind className="w-4 h-4 text-muted-foreground" />
                   <div>
-                    <div className="text-xs text-muted-foreground text-minimal">Ветер</div>
-                    <div className="text-lg font-medium">{wind} км/ч</div>
+                    <div className="text-[10px] text-muted-foreground text-minimal">Ветер</div>
+                    <div className="text-base font-medium">{wind} км/ч</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* 3-day forecast */}
-            <div className="flex md:flex-col gap-4">
-              {daily.time.map((date, i) => {
-                const dayWeather = weatherInfo(daily.weather_code[i]);
-                const max = Math.round(daily.temperature_2m_max[i]);
-                const min = Math.round(daily.temperature_2m_min[i]);
-                return (
-                  <div
-                    key={date}
-                    className="bg-card rounded-2xl p-5 shadow-elegant border border-border/50 min-w-[140px]"
-                  >
-                    <div className="text-minimal text-muted-foreground mb-3">
-                      {dayName(date)}
-                    </div>
-                    <div className="text-primary mb-3">{dayWeather.icon}</div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-2xl font-light">{max}°</span>
-                      <span className="text-muted-foreground text-sm">/{min}°</span>
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {dayWeather.label}
-                    </div>
-                  </div>
-                );
-              })}
+            {/* 16-day chart */}
+            <div className="bg-card rounded-2xl p-5 shadow-elegant border border-border/50">
+              <div className="text-minimal text-muted-foreground text-xs mb-3">
+                ПРОГНОЗ НА 16 ДНЕЙ
+              </div>
+              <ResponsiveContainer width="100%" height={140}>
+                <AreaChart
+                  data={daily.time.map((date, i) => ({
+                    date: new Date(date + "T12:00:00").toLocaleDateString("ru-RU", {
+                      day: "numeric",
+                      month: "short",
+                    }),
+                    max: Math.round(daily.temperature_2m_max[i]),
+                    min: Math.round(daily.temperature_2m_min[i]),
+                  }))}
+                  margin={{ top: 4, right: 0, left: -20, bottom: 0 }}
+                >
+                  <defs>
+                    <linearGradient id="tempMax" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#ea384c" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#ea384c" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="tempMin" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fontSize: 9, fill: "hsl(var(--muted-foreground))" }}
+                    tickLine={false}
+                    axisLine={false}
+                    interval={2}
+                  />
+                  <YAxis
+                    tick={{ fontSize: 9, fill: "hsl(var(--muted-foreground))" }}
+                    tickLine={false}
+                    axisLine={false}
+                    domain={["dataMin - 3", "dataMax + 3"]}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
+                    labelFormatter={(_, payload) => payload?.[0]?.payload?.date ?? ""}
+                    formatter={(value: number) => [`${value}°`, ""]}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="max"
+                    stroke="#ea384c"
+                    strokeWidth={1.5}
+                    fill="url(#tempMax)"
+                    dot={false}
+                    activeDot={{ r: 3 }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="min"
+                    stroke="#38bdf8"
+                    strokeWidth={1.5}
+                    fill="url(#tempMin)"
+                    dot={false}
+                    activeDot={{ r: 3 }}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
 

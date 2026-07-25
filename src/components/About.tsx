@@ -50,10 +50,14 @@ const About = () => {
               </div>
 
               <div className="pt-8 border-t border-border">
-                <div className="grid grid-cols-2 gap-8">
+                <div className="grid grid-cols-3 gap-8">
                   <div>
                     <h4 className="text-minimal text-muted-foreground mb-2">ВЫСОТА</h4>
                     <p className="text-xl">820 м</p>
+                  </div>
+                  <div>
+                    <h4 className="text-minimal text-muted-foreground mb-2">ПЛОЩАДЬ</h4>
+                    <p className="text-xl">100 м²</p>
                   </div>
                   <div>
                     <h4 className="text-minimal text-muted-foreground mb-2">ГОСТЕЙ</h4>

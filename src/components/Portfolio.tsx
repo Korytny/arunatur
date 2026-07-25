@@ -1,37 +1,45 @@
-import project1 from "@/assets/project-1.jpg";
-import project2 from "@/assets/project-2.jpg";
-import project3 from "@/assets/project-3.jpg";
-import project4 from "@/assets/project-4.jpg";
+import banyaImage from "@/assets/banya.jpg";
+import restImage from "@/assets/rest.jpg";
+import yogaImage from "@/assets/yoga.jpg";
+import kuhnyaImage from "@/assets/kuhnya.jpg";
+import pechImage from "@/assets/pech.jpg";
 
 const Portfolio = () => {
   const zones = [
     {
-      image: project1,
+      image: banyaImage,
       title: "БАНЯ НА ДРОВАХ",
       meta: "ПАРНАЯ · 6 ЧЕЛОВЕК",
       description:
         "Пар с можжевельником, веники из местных трав, печь на дровах. Прогревает до самых костей после горного воздуха.",
     },
     {
-      image: project2,
+      image: yogaImage,
       title: "ЙОГА-ХОЛЛ С ПАНОРАМОЙ",
       meta: "ТЁПЛЫЙ ПОЛ · 40 М²",
       description:
         "Теплый пол, маты, вид на рассвет над хребтом. Проводим утренние практики — приходите со своим ковриком или берите наш.",
     },
     {
-      image: project3,
+      image: restImage,
       title: "СПАЛЬНИ СКАНДИ-ШАЛЕ",
       meta: "3 КОМНАТЫ · ТЕМНОТА",
       description:
         "Ортопедические матрасы, хлопковое бельё, плотные шторы для полной темноты. Сон, после которого хочется жить.",
     },
     {
-      image: project4,
-      title: "КУПЕЛЬ ПОД ОТКРЫТЫМ НЕБОМ",
-      meta: "+4°C · ЗАКАТЫ · ЗВЁЗДЫ",
+      image: kuhnyaImage,
+      title: "КУХНЯ-ГОСТИНАЯ",
+      meta: "ПОЛНЫЙ ФАРТУК · ПОСУДА",
       description:
-        "Закат, звёзды и ледяная родниковая вода для прилива энергии. Контраст с баней — лучшая перезагрузка нервной системы.",
+        "Уютная кухня-гостиная, где можно готовить всей компанией. Всё необходимое для домашних ужинов — от сковородок до специй.",
+    },
+    {
+      image: pechImage,
+      title: "ПЕЧЬ НА ДРОВАХ",
+      meta: "ТЕПЛО · УЮТ · ПРОСТОР",
+      description:
+        "Настоящая дровяная печь — сердце дома. Она греет не только воздух, но и душу: тепло идёт отовсюду, уютно потрескивают дрова, а вокруг столько места, что хватит всем.",
     },
   ];
 

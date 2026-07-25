@@ -1,73 +1,113 @@
-# Welcome to your Lovable project
+# Аруна-Тур — сайт гостевого дома
 
-## Project info
+Сайт гостевого дома «Аруна-Тур» в посёлке Курджиново (КЧР). Владелец — Алексей Кривошапов.
 
-**URL**: https://lovable.dev/projects/09a14ae7-bd4a-415b-b22e-66bbeb1a9240
+## Стек
 
-## How can I edit this code?
+- **React 18** + **TypeScript**
+- **Vite** (сборка)
+- **Tailwind CSS** + **shadcn/ui** (компоненты)
+- **Leaflet** + **react-leaflet** (интерактивная карта)
+- **Recharts** (график погоды)
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/09a14ae7-bd4a-415b-b22e-66bbeb1a9240) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Установка и запуск
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+npm install
+npm run dev     # dev-сервер на порту 8080
+npm run build   # production сборка
+npx tsc --noEmit # проверка типов
 ```
 
-**Edit a file directly in GitHub**
+## Структура проекта
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+src/
+├── pages/              # Страницы (роуты)
+│   ├── Index.tsx       # Главная — секции: Hero, About, MapSection, FAQ, ...
+│   ├── Host.tsx        # Страница хозяина (карусель фотографий + текст)
+│   └── Routes.tsx      # Подробная карта с маршрутами
+│
+├── components/         # Компоненты
+│   ├── Navigation.tsx  # Навбар (z-50)
+│   ├── Hero.tsx        # Главный экран
+│   ├── MapSection.tsx  # Компонент-обёртка карты для главной
+│   ├── HostCarousel.tsx # Карусель фото хозяина (с пропсом compact)
+│   ├── WeatherWidget.tsx # 16-дневный график погоды
+│   ├── LayerControl.tsx # Панель чекбоксов для включения/выключения слоёв
+│   ├── LandmarksLayer.tsx  # Слой достопримечательностей (маркеры)
+│   ├── InfrastructureLayer.tsx  # Слой инфраструктуры (маркеры)
+│   ├── RoutesLayer.tsx  # Слой маршрутов (линии)
+│   └── ...             # Остальные секции (About, Services, FAQ, Pricing, HouseRules)
+│
+├── data/               # Данные
+│   ├── landmarkPoints.ts      # 10 достопримечательностей с координатами
+│   ├── infrastructurePoints.ts # 14 объектов инфраструктуры
+│   └── routes.ts              # 2 маршрута (синий + красный)
+│
+├── App.tsx             # Роутинг (/ → Index, /host → Host, /routes → Routes)
+├── main.tsx            # Точка входа
+└── index.css           # Глобальные стили, Leaflet z-index фиксы
+```
 
-**Use GitHub Codespaces**
+## Карта (Leaflet)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Карта работает на трёх страницах, один компонент `MapSection` на главной и карта на `/routes`.
 
-## What technologies are used for this project?
+### Слои
 
-This project is built with:
+Все слои управляются через `LayerControl` — панель чекбоксов в правом верхнем углу карты.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+| Слой | По умолчанию | Описание |
+|------|-------------|----------|
+| 🏔 Достопримечательности | **Включён** | 10 маркеров с попапами и тултипами |
+| 🏪 Инфраструктура | **Выключен** | 14 маркеров (магазины, кафе, парковки, аптеки...) |
+| 🛣 Маршруты | **Выключен** | 2 цветных маршрута-линии |
 
-## How can I deploy this project?
+### Слои
 
-Simply open [Lovable](https://lovable.dev/projects/09a14ae7-bd4a-415b-b22e-66bbeb1a9240) and click on Share -> Publish.
+| Слой | Цвет | Точки |
+|------|------|-------|
+| **Синий маршрут** | `#3B82F6` | Мегалиты Скала Шапка → Кызыл Бек → Ахмет Скала → Смотровая |
+| **Красный маршрут** | `#EF4444` | Камень Гриб → Мощевая Балка → Водопад Будулай → Заброшенная шахта → Рожкао |
 
-## Can I connect a custom domain to my Lovable project?
+### Поведение
 
-Yes, you can!
+- **Зум на все точки**: при включении слоя через чекбокс карта зумится, чтобы показать все объекты слоя (fitBounds).
+- **Навбар поверх карты**: навбар на z-50, Leaflet панели на z-45 (CSS фикс в index.css).
+- **Маркеры** имеют попапы (клик) и тултипы (наведение — имя объекта).
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Как добавить точку
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+1. Открыть `src/data/landmarkPoints.ts` (или `infrastructurePoints.ts`)
+2. Добавить объект в массив:
+```ts
+{
+  id: "my-place",
+  name: "Название",
+  type: "viewpoint", // один из: viewpoint, waterfall, historical, natural, cultural, religious, recreation
+  coords: [43.95, 40.94],
+  description: "Описание",
+}
+```
+
+### Как добавить маршрут
+
+Открыть `src/data/routes.ts`, добавить объект:
+```ts
+{
+  id: "my-route",
+  name: "Название",
+  description: "Описание",
+  color: "#HEX",    // цвет линии
+  weight: 4,
+  points: [[lat, lng], [lat, lng], ...],  // точки маршрута
+  waypoints: [{ name: "...", coords: [lat, lng] }, ...], // остановки для попапа
+}
+```
+
+## Особенности
+
+- **Карусель хозяина** (`HostCarousel`): принимает проп `compact` — в компактном режиме скрыт текст, только карусель со стрелками и точками.
+- **Lovel, 17.25s** — сборка занимает ~20 секунд.
+- **Типографика**: заголовки секций в одну строку, ссылка «Посмотреть полностью» там же.

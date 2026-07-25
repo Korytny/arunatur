@@ -152,3 +152,20 @@
     }
   }
 }
+
+/* Leaflet z-index fix — не залезать поверх навбара (z-50) */
+.leaflet-pane {
+  z-index: 40 !important;
+}
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 45 !important;
+}
+.leaflet-control {
+  z-index: 45 !important;
+}
+
+/* Скрываем Leaflet из атрибуции карты — оставляем только OpenStreetMap */
+.leaflet-control-attribution a[href*="leafletjs"] {
+  display: none;
+}

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const links = [
+  { href: "/host", label: "ХОЗЯИН" },
   { href: "/routes", label: "МАРШРУТЫ" },
   { href: "/blog", label: "ОТЧЁТЫ ГОСТЕЙ" },
   { href: "/contact", label: "КОНТАКТЫ" },

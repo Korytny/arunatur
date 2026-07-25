@@ -13,7 +13,7 @@ const rules = [
   {
     icon: Clock,
     title: "Заезд и выезд",
-    description: "Заезд с 15:00, выезд до 12:00. По договорённости — ранний заезд или поздний выезд, если дом свободен.",
+    description: "Заезд и выезд в любое время. Сутки полностью ваши.",
   },
   {
     icon: Moon,
@@ -64,7 +64,7 @@ const HouseRules = () => {
             <h3 className="text-4xl md:text-6xl font-light text-architectural">
               Договоримся на берегу
             </h3>
-            <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
               Несколько простых правил, чтобы ваш отдых и отдых соседей
               прошёл комфортно.
             </p>

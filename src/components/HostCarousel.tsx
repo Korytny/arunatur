@@ -1,108 +1,176 @@
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
   CarouselPrevious,
+  CarouselNext,
+  type CarouselApi,
 } from "@/components/ui/carousel";
-import heroImage from "@/assets/hero-architecture.jpg";
-import project1 from "@/assets/project-1.jpg";
-import project2 from "@/assets/project-2.jpg";
-import project3 from "@/assets/project-3.jpg";
+import Autoplay from "embla-carousel-autoplay";
+import host1 from "@/assets/host1.jpg";
+import host2 from "@/assets/host2.jpg";
+import host3 from "@/assets/host3.jpg";
 
 const slides = [
   {
-    src: heroImage,
-    alt: "Дом у леса — вид с веранды",
+    src: host1,
+    alt: "Алексей Кривошапов — хозяин гостевого дома",
   },
   {
-    src: project1,
-    alt: "Баня на дровах",
+    src: host2,
+    alt: "Гостевой дом в Курджиново",
   },
   {
-    src: project2,
-    alt: "Йога-холл с панорамой",
-  },
-  {
-    src: project3,
-    alt: "Купель под открытым небом",
+    src: host3,
+    alt: "Семья и природа КЧР",
   },
 ];
 
-const HostCarousel = () => {
+const HostCarousel = ({ compact }: { compact?: boolean }) => {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // IntersectionObserver для анимации появления
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Отслеживание текущего слайда для индикаторов
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      setCurrent(api.selectedScrollSnap());
+    };
+
+    api.on("select", onSelect);
+    // начальное значение
+    onSelect();
+
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
+
+  const scrollTo = useCallback(
+    (index: number) => {
+      api?.scrollTo(index);
+    },
+    [api]
+  );
+
   return (
-    <section id="host" className="py-32 bg-background">
+    <section
+      id="host"
+      ref={sectionRef}
+      className="py-32 bg-gradient-to-b from-background via-muted/20 to-muted/30"
+    >
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 md:gap-24 items-center">
+          <div
+            className={`grid md:grid-cols-2 gap-16 md:gap-24 items-center transition-all duration-1000 ease-out ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-12"
+            }${compact ? " md:grid-cols-1 max-w-7xl mx-auto" : ""}`}
+          >
             {/* Карусель */}
-            <div className="warm-image shadow-architectural">
-              <Carousel opts={{ loop: true, align: "center" }}>
+            <div className="warm-image shadow-architectural rounded-2xl overflow-hidden order-1 md:order-1 w-full">
+              <Carousel
+                opts={{ loop: true, align: "center" }}
+                plugins={[
+                  Autoplay({
+                    delay: 5000,
+                    stopOnInteraction: true,
+                    stopOnMouseEnter: true,
+                  }),
+                ]}
+                setApi={setApi}
+              >
                 <CarouselContent>
-                  {slides.map((slide) => (
+                  {slides.map((slide, index) => (
                     <CarouselItem key={slide.alt}>
-                      <img
-                        src={slide.src}
-                        alt={slide.alt}
-                        loading="lazy"
-                        className="w-full h-[400px] md:h-[500px] object-cover"
-                      />
+                      <div className={`relative ${compact ? "aspect-[4/3]" : "aspect-[4/3] md:aspect-[3/2]"}`}>
+                        <img
+                          src={slide.src}
+                          alt={slide.alt}
+                          loading={index === 0 ? "eager" : "lazy"}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      </div>
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious className="left-4 bg-background/70 hover:bg-background" />
-                <CarouselNext className="right-4 bg-background/70 hover:bg-background" />
+
+                <CarouselPrevious className="left-4 bg-background/70 hover:bg-background border-0 shadow-md backdrop-blur-sm" />
+                <CarouselNext className="right-4 bg-background/70 hover:bg-background border-0 shadow-md backdrop-blur-sm" />
+
+                {/* Dot-индикаторы */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
+                  {slides.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => scrollTo(index)}
+                      className={`transition-all duration-300 rounded-full ${
+                        index === current
+                          ? "w-8 h-2.5 bg-white shadow-md"
+                          : "w-2.5 h-2.5 bg-white/50 hover:bg-white/80"
+                      }`}
+                      aria-label={`Слайд ${index + 1} из ${slides.length}`}
+                    />
+                  ))}
+                </div>
               </Carousel>
             </div>
 
-            {/* Текст о хозяине */}
+            {!compact && (
+            /* Текст о хозяине */
             <div className="space-y-8">
               <div>
                 <h2 className="text-minimal text-muted-foreground mb-4">
                   ХОЗЯИН
                 </h2>
                 <h3 className="text-4xl md:text-6xl font-light text-architectural">
-                  Евгений
+                  Алексей
                 </h3>
               </div>
 
               <div className="space-y-6 text-muted-foreground leading-relaxed">
                 <p>
-                  Я коренной житель Курджиново. Этот дом строил для себя —
-                  чтобы было место, куда хочется возвращаться из любой поездки.
-                  Теперь делюсь им с теми, кто ищет тишины и настоящего
-                  отдыха в горах.
+                  Всем добра! Меня зовут Кривошапов Алексей, и я рад
+                  приветствовать вас на странице нашего гостевого дома в
+                  предгорьях Биосферного заповедника. Расскажу немного о нашей
+                  большой и дружной семье и себе. Сейчас мы воспитываем 6
+                  мальчиков и 1 принцессу — и в такой компании не так просто
+                  куда-то поехать)) Отчасти поэтому мы и приобрели дом в селе
+                  Курджиново, КЧР.
                 </p>
-                <p>
-                  Каждая деталь здесь — от расположения бани до выбора матрасов —
-                  продумана так, чтобы вы ни о чём не думали, а просто
-                  отдыхали. Я лично встречаю гостей, рассказываю про маршруты,
-                  топлю баню и слежу, чтобы всё было как надо.
-                </p>
-                <p>
-                  Если захотите — покажу водопады и дольмены, которых нет на
-                  картах. Или оставлю вас в покое — и это тоже правильный
-                  выбор. Приезжайте как к другу.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 text-sm text-muted-foreground border-t border-border pt-6">
-                <span className="text-minimal text-secondary">СВЯЗАТЬСЯ</span>
                 <a
-                  href="tel:+89150255285"
-                  className="hover:text-accent transition-colors"
+                  href="/host"
+                  className="inline-block text-minimal text-secondary hover:text-accent transition-colors border-b border-secondary/30 hover:border-accent/30 pb-0.5"
                 >
-                  +8-915-025-52-85
-                </a>
-                <span className="text-border">·</span>
-                <a
-                  href="mailto:hello@аруна-тур.рф"
-                  className="hover:text-accent transition-colors"
-                >
-                  hello@аруна-тур.рф
+                  Читать полностью →
                 </a>
               </div>
             </div>
+            )}
           </div>
         </div>
       </div>

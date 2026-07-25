@@ -7,7 +7,7 @@ const RoutesLayer = () => {
   const map = useMap();
 
   useEffect(() => {
-    const group = L.layerGroup().addTo(map);
+    const group = L.featureGroup();
 
     routes.forEach((route: Route) => {
       const polyline = L.polyline(route.points, {
@@ -20,20 +20,28 @@ const RoutesLayer = () => {
         route.waypoints
           ?.map(
             (wp) =>
-              `<li style="margin:0 0 2px">${wp.name}${wp.description ? ` — ${wp.description}` : ""}</li>`,
+              `<li style="margin:0 0 3px;font-size:12px;color:#444">${wp.name}${wp.description ? ` <span style="color:#888">— ${wp.description}</span>` : ""}</li>`,
           )
           .join("") ?? "";
 
       polyline.bindPopup(`
-        <div style="font-size:13px;font-family:sans-serif;max-width:240px">
-          <p style="font-weight:600;color:#333;margin:0 0 4px">${route.name}</p>
-          <p style="font-size:12px;color:#666;margin:0 0 4px">${route.description}</p>
-          <p style="font-size:11px;color:#888;margin:0 0 2px;font-weight:600">Остановки:</p>
-          <ul style="font-size:11px;color:#888;margin:0;padding-left:16px">${waypointHtml}</ul>
+        <div style="font-size:13px;font-family:sans-serif;max-width:260px;line-height:1.4">
+          <p style="font-weight:700;color:#1a1a1a;margin:0 0 6px;font-size:14px">${route.name}</p>
+          <p style="font-size:12px;color:#555;margin:0 0 6px">${route.description}</p>
+          <p style="font-size:12px;color:#888;margin:0 0 3px;font-weight:600;border-top:1px solid #eee;padding-top:4px">Остановки:</p>
+          <ul style="margin:0;padding-left:18px">${waypointHtml}</ul>
         </div>
       `);
 
       group.addLayer(polyline);
+    });
+
+    // Зум на маршруты при включении слоя
+    group.on("add", () => {
+      const b = group.getBounds();
+      if (b.isValid()) {
+        map.fitBounds(b, { padding: [50, 50], maxZoom: 14 });
+      }
     });
 
     if (typeof window !== "undefined") {
