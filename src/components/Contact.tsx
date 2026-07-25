@@ -15,9 +15,13 @@ const Contact = () => {
             </h2>
           </div>
           <div className="grid md:grid-cols-2 gap-12 items-stretch">
-            <AvailabilityCalendar onDateSelect={setDates} />
+            <AvailabilityCalendar
+              onDateSelect={setDates}
+              selectedCheckIn={dates.check_in}
+              selectedCheckOut={dates.check_out}
+            />
             <div className="h-full">
-              <BookingForm {...dates} />
+              <BookingForm {...dates} onDatesChange={setDates} />
             </div>
           </div>
         </div>

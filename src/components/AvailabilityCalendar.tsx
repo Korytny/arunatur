@@ -28,14 +28,28 @@ interface DateSelection {
 
 interface Props {
   onDateSelect?: (selection: DateSelection) => void;
+  selectedCheckIn?: string;
+  selectedCheckOut?: string;
 }
 
-const AvailabilityCalendar = ({ onDateSelect }: Props) => {
+const AvailabilityCalendar = ({ onDateSelect, selectedCheckIn, selectedCheckOut }: Props) => {
   const [selectedRange, setSelectedRange] = useState<{ from: Date; to: Date } | null>(null);
-  const [months, setMonths] = useState(4);
+  const [months, setMonths] = useState(2);
+
+  // Синхронизируем выделенный диапазон с формой бронирования
+  useEffect(() => {
+    if (selectedCheckIn && selectedCheckOut) {
+      setSelectedRange({
+        from: parseISO(selectedCheckIn),
+        to: parseISO(selectedCheckOut),
+      });
+    } else if (!selectedCheckIn && !selectedCheckOut) {
+      setSelectedRange(null);
+    }
+  }, [selectedCheckIn, selectedCheckOut]);
 
   useEffect(() => {
-    const check = () => setMonths(window.innerWidth < 768 ? 1 : 4);
+    const check = () => setMonths(window.innerWidth < 768 ? 1 : 2);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -134,8 +148,8 @@ const AvailabilityCalendar = ({ onDateSelect }: Props) => {
           }}
           disabled={isDisabled}
           classNames={{
-            months: "grid grid-cols-1 md:grid-cols-2 gap-4",
-            month: "space-y-4",
+            months: "grid grid-cols-1 md:grid-cols-2 gap-2",
+            month: "space-y-2",
             caption: "flex justify-center pt-1 relative items-center",
             caption_label: "text-sm font-medium",
             nav: "space-x-1 flex items-center",

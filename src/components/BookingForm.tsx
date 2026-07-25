@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { DatePicker } from "@/components/ui/date-picker";
 
 const bookingSchema = z
@@ -58,9 +57,10 @@ function expandBookedDates(rows: { check_in: string; check_out: string }[]): Dat
 interface Props {
   check_in?: string;
   check_out?: string;
+  onDatesChange?: (d: { check_in: string; check_out: string }) => void;
 }
 
-const BookingForm = ({ check_in: initialIn = "", check_out: initialOut = "" }: Props) => {
+const BookingForm = ({ check_in: initialIn = "", check_out: initialOut = "", onDatesChange }: Props) => {
   const [loading, setLoading] = useState(false);
 
   // Sync dates picked from calendar into the form
@@ -99,8 +99,13 @@ const BookingForm = ({ check_in: initialIn = "", check_out: initialOut = "" }: P
     comment: "",
   });
 
-  const update = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
-    setForm((f) => ({ ...f, [k]: v }));
+  const update = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) => {
+    const next = { ...form, [k]: v };
+    setForm(next);
+    if (onDatesChange && (k === "check_in" || k === "check_out")) {
+      onDatesChange({ check_in: next.check_in, check_out: next.check_out });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -168,7 +173,7 @@ const BookingForm = ({ check_in: initialIn = "", check_out: initialOut = "" }: P
         </p>
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label htmlFor="guest_name">Имя</Label>
           <Input
@@ -187,20 +192,18 @@ const BookingForm = ({ check_in: initialIn = "", check_out: initialOut = "" }: P
             value={form.phone}
             onChange={(e) => update("phone", e.target.value)}
             placeholder="+7 ___ ___ __ __"
-            required
           />
         </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="email">Email (необязательно)</Label>
-        <Input
-          id="email"
-          type="email"
-          value={form.email}
-          onChange={(e) => update("email", e.target.value)}
-          placeholder="you@example.com"
-        />
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={form.email}
+            onChange={(e) => update("email", e.target.value)}
+            placeholder="you@example.com"
+          />
+        </div>
       </div>
 
       <div className="grid sm:grid-cols-3 gap-4">
@@ -238,35 +241,6 @@ const BookingForm = ({ check_in: initialIn = "", check_out: initialOut = "" }: P
             required
           />
         </div>
-      </div>
-
-      <div className="space-y-3 rounded-2xl border border-border p-4">
-        <label className="flex items-start gap-3 cursor-pointer">
-          <Checkbox
-            checked={form.needs_excursions}
-            onCheckedChange={(v) => update("needs_excursions", v === true)}
-            className="mt-1"
-          />
-          <div>
-            <div className="text-sm font-medium">Нужны экскурсии</div>
-            <div className="text-xs text-muted-foreground">
-              Водопады, пещеры, пешие маршруты с гидом
-            </div>
-          </div>
-        </label>
-        <label className="flex items-start gap-3 cursor-pointer">
-          <Checkbox
-            checked={form.needs_meals}
-            onCheckedChange={(v) => update("needs_meals", v === true)}
-            className="mt-1"
-          />
-          <div>
-            <div className="text-sm font-medium">Нужно питание</div>
-            <div className="text-xs text-muted-foreground">
-              Домашние завтраки, обеды и ужины
-            </div>
-          </div>
-        </label>
       </div>
 
       <div className="space-y-2">
