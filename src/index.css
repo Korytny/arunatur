@@ -6,47 +6,47 @@
 
 @layer base {
   :root {
-    /* Тёплая кремовая основа */
-    --background: 38 30% 96%;
+    /* Тёплая кремово-персиковая основа */
+    --background: 35 35% 96%;
     --foreground: 160 35% 12%;
 
-    --card: 38 30% 98%;
+    --card: 35 35% 98%;
     --card-foreground: 160 35% 12%;
 
-    --popover: 38 30% 98%;
+    --popover: 35 35% 98%;
     --popover-foreground: 160 35% 12%;
 
     /* Глубокий лесной зелёный #1A3B32 */
     --primary: 165 39% 17%;
-    --primary-foreground: 38 40% 97%;
+    --primary-foreground: 35 40% 97%;
 
     /* Тёплый деревянный #8B5A2B */
     --secondary: 28 53% 36%;
-    --secondary-foreground: 38 40% 97%;
+    --secondary-foreground: 35 40% 97%;
 
-    --muted: 38 25% 91%;
+    --muted: 30 25% 91%;
     --muted-foreground: 160 18% 28%;
 
     /* Горное небо / лазурит #3A6B8C */
     --accent: 205 41% 39%;
-    --accent-foreground: 38 40% 97%;
+    --accent-foreground: 35 40% 97%;
 
     --destructive: 0 70% 45%;
-    --destructive-foreground: 38 40% 97%;
+    --destructive-foreground: 35 40% 97%;
 
-    --border: 30 20% 84%;
-    --input: 30 20% 90%;
+    --border: 28 20% 84%;
+    --input: 28 20% 90%;
     --ring: 165 39% 17%;
 
     --radius: 1.25rem;
 
-    --sidebar-background: 38 30% 96%;
+    --sidebar-background: 35 35% 96%;
     --sidebar-foreground: 160 35% 12%;
     --sidebar-primary: 165 39% 17%;
-    --sidebar-primary-foreground: 38 40% 97%;
-    --sidebar-accent: 38 25% 91%;
+    --sidebar-primary-foreground: 35 40% 97%;
+    --sidebar-accent: 30 25% 91%;
     --sidebar-accent-foreground: 165 39% 17%;
-    --sidebar-border: 30 20% 84%;
+    --sidebar-border: 28 20% 84%;
     --sidebar-ring: 205 41% 39%;
 
     /* Природные градиенты и тени */
@@ -59,6 +59,18 @@
 
     --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     --transition-fast: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Персекционные градиенты фона — светлые кремово-персиковые */
+    --sec-1-from: hsl(35 35% 97%);
+    --sec-1-to:   hsl(30 30% 94%);
+    --sec-2-from: hsl(30 30% 94%);
+    --sec-2-to:   hsl(28 28% 91%);
+    --sec-3-from: hsl(28 28% 91%);
+    --sec-3-to:   hsl(25 30% 90%);
+    --sec-4-from: hsl(25 30% 90%);
+    --sec-4-to:   hsl(30 30% 93%);
+    --sec-5-from: hsl(30 30% 93%);
+    --sec-5-to:   hsl(35 35% 97%);
   }
 
   .dark {
@@ -89,6 +101,18 @@
     --border: 165 18% 18%;
     --input: 165 18% 16%;
     --ring: 205 50% 55%;
+
+    /* Персекционные градиенты фона — тёмные лесные */
+    --sec-1-from: hsl(165 30% 7%);
+    --sec-1-to:   hsl(165 28% 10%);
+    --sec-2-from: hsl(165 28% 10%);
+    --sec-2-to:   hsl(165 25% 13%);
+    --sec-3-from: hsl(165 25% 13%);
+    --sec-3-to:   hsl(165 22% 10%);
+    --sec-4-from: hsl(165 22% 10%);
+    --sec-4-to:   hsl(165 28% 9%);
+    --sec-5-from: hsl(165 28% 9%);
+    --sec-5-to:   hsl(165 30% 7%);
   }
 }
 
@@ -99,8 +123,16 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    min-height: 100vh;
     font-feature-settings: "ss01", "ss02";
   }
+
+  /* Персекционные градиенты для секций */
+  .bg-section-1 { background: linear-gradient(180deg, var(--sec-1-from), var(--sec-1-to)); }
+  .bg-section-2 { background: linear-gradient(180deg, var(--sec-2-from), var(--sec-2-to)); }
+  .bg-section-3 { background: linear-gradient(180deg, var(--sec-3-from), var(--sec-3-to)); }
+  .bg-section-4 { background: linear-gradient(180deg, var(--sec-4-from), var(--sec-4-to)); }
+  .bg-section-5 { background: linear-gradient(180deg, var(--sec-5-from), var(--sec-5-to)); }
 
   .text-architectural {
     @apply tracking-[-0.015em] leading-[1.1];

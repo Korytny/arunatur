@@ -9,7 +9,7 @@ const CENTER: [number, number] = [43.9889, 40.9569];
 
 const MapSection = () => {
   return (
-    <section id="routes" className="py-32">
+    <section id="routes" className="py-32 bg-section-1">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-12">

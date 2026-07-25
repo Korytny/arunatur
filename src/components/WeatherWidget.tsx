@@ -91,7 +91,7 @@ export function WeatherWidget() {
 
   if (isLoading) {
     return (
-      <section className="py-24 bg-background/50">
+      <section className="py-24 bg-section-5">
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
             <div className="mb-16">
@@ -137,7 +137,7 @@ export function WeatherWidget() {
   const { label, icon } = weatherInfo(current.weather_code);
 
   return (
-    <section className="py-24 bg-background/50">
+    <section className="py-24 bg-section-5">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16">

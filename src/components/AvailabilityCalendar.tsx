@@ -1,6 +1,6 @@
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { format, parseISO, isSameDay } from "date-fns";
+import { format, parseISO, isSameDay, addDays } from "date-fns";
 import { ru } from "date-fns/locale";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
@@ -21,7 +21,18 @@ function expandBookings(rows: { check_in: string; check_out: string }[]): Bookin
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
-const AvailabilityCalendar = () => {
+interface DateSelection {
+  check_in: string;
+  check_out: string;
+}
+
+interface Props {
+  onDateSelect?: (selection: DateSelection) => void;
+}
+
+const AvailabilityCalendar = ({ onDateSelect }: Props) => {
+  const [selectedRange, setSelectedRange] = useState<{ from: Date; to: Date } | null>(null);
+
   const { data: ranges } = useQuery({
     queryKey: ["booked-ranges"],
     queryFn: async () => {
@@ -52,22 +63,52 @@ const AvailabilityCalendar = () => {
     [bookingRanges],
   );
 
-  const isPastOrDisabled = useCallback((day: Date) => day < today, []);
+  const isDisabled = useCallback(
+    (day: Date) => day < today || isBooked(day),
+    [isBooked],
+  );
+
+  const isInSelectedRange = useCallback(
+    (day: Date) =>
+      selectedRange !== null && day >= selectedRange.from && day <= selectedRange.to,
+    [selectedRange],
+  );
+
+  const handleSelect = (day: Date | undefined) => {
+    if (!day || isDisabled(day)) return;
+
+    // Ищем первый занятый диапазон после выбранной даты
+    const sorted = [...bookingRanges].sort(
+      (a, b) => a.from.getTime() - b.from.getTime(),
+    );
+    const next = sorted.find((r) => r.from > day);
+
+    // check_out = день перед следующим заездом, либо +7 если свободно
+    const checkOut = next
+      ? addDays(next.from, -1)
+      : addDays(day, 7);
+
+    setSelectedRange({ from: day, to: checkOut });
+
+    onDateSelect?.({
+      check_in: format(day, "yyyy-MM-dd"),
+      check_out: format(checkOut, "yyyy-MM-dd"),
+    });
+  };
 
   return (
     <div className="bg-background border border-border rounded-3xl p-6 md:p-8 shadow-elegant h-full flex flex-col">
       <h3 className="text-xl md:text-2xl font-light text-architectural mb-1">
-        Занятые даты
+        Выберите свободную дату
       </h3>
       <p className="text-sm text-muted-foreground mb-6">
-        Цветные полосы показывают периоды бронирования.
+        Нажмите на свободную дату — заезд и выезд подставятся автоматически.
       </p>
 
       <div className="flex justify-center flex-1">
         <DayPicker
           mode="single"
-          selected={undefined}
-          onSelect={() => {}}
+          onSelect={handleSelect}
           numberOfMonths={4}
           locale={ru}
           fromDate={today}
@@ -75,13 +116,15 @@ const AvailabilityCalendar = () => {
             booked: isBooked,
             rangeStart: (day) => isBooked(day) && isRangeStart(day),
             rangeEnd: (day) => isBooked(day) && isRangeEnd(day),
+            selectedRange: isInSelectedRange,
           }}
           modifiersClassNames={{
             booked: "!bg-primary/20",
             rangeStart: "!rounded-l-full",
             rangeEnd: "!rounded-r-full",
+            selectedRange: "dark:!bg-white dark:!text-emerald-700 !bg-emerald-700 !text-white",
           }}
-          disabled={isPastOrDisabled}
+          disabled={isDisabled}
           classNames={{
             months: "grid grid-cols-2 gap-4",
             month: "space-y-4",
@@ -100,7 +143,7 @@ const AvailabilityCalendar = () => {
             cell: "h-9 w-9 text-center text-sm p-0 relative",
             day: "h-9 w-9 p-0 font-normal rounded-md hover:bg-accent",
             day_selected:
-              "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
+              "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground font-semibold",
             day_today: "bg-accent/50 text-accent-foreground font-semibold",
             day_disabled: "text-muted-foreground opacity-30",
             day_outside: "text-muted-foreground opacity-40",

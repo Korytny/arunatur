@@ -32,7 +32,7 @@ const items = [
 
 const Services = () => {
   return (
-    <section id="advantages" className="py-32 bg-background">
+    <section id="advantages" className="py-32 bg-background bg-section-5">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           <div className="mb-20">

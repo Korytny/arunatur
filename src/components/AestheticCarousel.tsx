@@ -84,7 +84,7 @@ const AestheticCarousel = () => {
     <section
       id="aesthetic"
       ref={sectionRef}
-      className="py-32 bg-muted/30"
+      className="py-32 bg-muted/30 bg-section-4"
     >
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">

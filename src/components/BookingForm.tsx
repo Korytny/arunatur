@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { format, eachDayOfInterval, parseISO } from "date-fns";
@@ -14,7 +14,7 @@ import { DatePicker } from "@/components/ui/date-picker";
 const bookingSchema = z
   .object({
     guest_name: z.string().trim().min(2, "Минимум 2 символа").max(100),
-    phone: z.string().trim().min(5, "Укажите телефон").max(30),
+    phone: z.string().trim().max(30).optional().or(z.literal("")),
     email: z
       .string()
       .trim()
@@ -32,6 +32,10 @@ const bookingSchema = z
   .refine((v) => new Date(v.check_out) > new Date(v.check_in), {
     message: "Дата выезда должна быть позже заезда",
     path: ["check_out"],
+  })
+  .refine((v) => v.phone || v.email, {
+    message: "Укажите телефон или email для связи",
+    path: ["phone"],
   });
 
 const today = new Date().toISOString().slice(0, 10);
@@ -51,8 +55,22 @@ function expandBookedDates(rows: { check_in: string; check_out: string }[]): Dat
   return [...set].map((s) => parseISO(s));
 }
 
-const BookingForm = () => {
+interface Props {
+  check_in?: string;
+  check_out?: string;
+}
+
+const BookingForm = ({ check_in: initialIn = "", check_out: initialOut = "" }: Props) => {
   const [loading, setLoading] = useState(false);
+
+  // Sync dates picked from calendar into the form
+  useEffect(() => {
+    setForm((prev) => ({
+      ...prev,
+      ...(initialIn ? { check_in: initialIn } : {}),
+      ...(initialOut ? { check_out: initialOut } : {}),
+    }));
+  }, [initialIn, initialOut]);
 
   // Fetch confirmed bookings to show unavailable dates
   const { data: bookedDates } = useQuery({
@@ -60,8 +78,7 @@ const BookingForm = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("bookings")
-        .select("check_in, check_out")
-        .in("status", ["confirmed", "approved"]);
+        .select("check_in, check_out");
       if (error) throw error;
       return expandBookedDates(data ?? []);
     },
@@ -144,10 +161,10 @@ const BookingForm = () => {
     >
       <div>
         <h3 className="text-2xl md:text-3xl font-light text-architectural mb-2">
-          Оставить заявку
+          Оставьте заявку
         </h3>
         <p className="text-sm text-muted-foreground">
-          Напишите даты — мы подтвердим свободные и расскажем подробности.
+          Мы свяжемся с вами по указанному контакту
         </p>
       </div>
 

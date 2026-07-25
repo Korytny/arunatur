@@ -80,7 +80,7 @@ const HostCarousel = ({ compact }: { compact?: boolean }) => {
     <section
       id="host"
       ref={sectionRef}
-      className="py-32 bg-gradient-to-b from-background via-muted/20 to-muted/30"
+      className="py-32 bg-gradient-to-b from-background via-muted/20 to-muted/30 bg-section-2"
     >
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">

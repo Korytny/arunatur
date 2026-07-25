@@ -48,7 +48,7 @@ const tariffs = [
 
 const Pricing = () => {
   return (
-    <section id="pricing" className="py-32 bg-background">
+    <section id="pricing" className="py-32 bg-background bg-section-3">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">

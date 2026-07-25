@@ -1,4 +1,5 @@
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import ScrollWheelHandler from "@/components/ScrollWheelHandler";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -41,7 +42,7 @@ const Footer = () => {
           <div>
             <div className="text-minimal mb-4">АРУНА - ТУР</div>
             <p className="text-primary-foreground/80 text-sm leading-relaxed">
-              Сруб у леса с баней, купелью и пространством для йоги. Горы Карачаево-Черкесии.
+              Дом у леса с баней, купелью и пространством для йоги. Горы Карачаево-Черкесии.
             </p>
           </div>
 
@@ -69,12 +70,14 @@ const Footer = () => {
             <MapContainer
               center={CENTER}
               zoom={15}
+              scrollWheelZoom={false}
               style={{ height: "100%", width: "100%" }}
             >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
+              <ScrollWheelHandler />
               <Marker position={CENTER} icon={houseIcon} />
             </MapContainer>
           </div>

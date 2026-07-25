@@ -70,7 +70,7 @@ const faqItems = [
 
 const FAQ = () => {
   return (
-    <section id="faq" className="py-32 bg-muted/40">
+    <section id="faq" className="py-32 bg-muted/40 bg-section-4">
       <div className="container mx-auto px-6">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16">

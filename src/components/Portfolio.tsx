@@ -44,7 +44,7 @@ const Portfolio = () => {
   ];
 
   return (
-    <section id="zones" className="py-32 bg-background">
+    <section id="zones" className="py-32 bg-background bg-section-2">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           <div className="mb-20">
