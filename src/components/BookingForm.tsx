@@ -142,6 +142,33 @@ const BookingForm = ({ check_in: initialIn = "", check_out: initialOut = "", onD
       return;
     }
 
+    // Отправляем уведомление администратору
+    const token = import.meta.env.VITE_SUPABASE_SERVICE_ROLE;
+    const notificationData = {
+      guest_name: parsed.data.guest_name,
+      phone: parsed.data.phone,
+      email: parsed.data.email || null,
+      check_in: parsed.data.check_in,
+      check_out: parsed.data.check_out,
+      guests_count: parsed.data.guests_count,
+      needs_excursions: parsed.data.needs_excursions,
+      needs_meals: parsed.data.needs_meals,
+      comment: parsed.data.comment || null,
+    };
+
+    try {
+      await fetch('https://fvevonyrouptkihjnzco.supabase.co/functions/v1/send-notification', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ booking: notificationData })
+      });
+    } catch (notifyError) {
+      console.warn('Failed to send notification:', notifyError);
+    }
+
     toast({
       title: "Заявка отправлена",
       description: "Мы свяжемся с вами в ближайшее время.",
