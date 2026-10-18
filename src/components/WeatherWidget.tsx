@@ -87,6 +87,8 @@ export function WeatherWidget() {
     queryFn: fetchWeather,
     refetchInterval: 30 * 60 * 1000, // refresh every 30 min
     staleTime: 10 * 60 * 1000,
+    retry: 2,
+    retryDelay: 1000,
   });
 
   if (isLoading) {
@@ -123,7 +125,51 @@ export function WeatherWidget() {
   }
 
   if (error || !data) {
-    return null; // silently hide on error
+    return (
+      <section className="py-24 bg-section-5">
+        <div className="container mx-auto px-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-16">
+              <h2 className="text-minimal text-muted-foreground mb-4">ПОГОДА В КУРДЖИНОВО</h2>
+              <h3 className="text-4xl md:text-6xl font-light text-architectural">
+                Прогноз на сегодня
+              </h3>
+            </div>
+            <div className="bg-card rounded-2xl p-8 shadow-elegant border border-border/50">
+              <p className="text-muted-foreground text-center">
+                Данные о погоде временно недоступны
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!data) {
+    return (
+      <section className="py-24 bg-section-5">
+        <div className="container mx-auto px-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-16">
+              <h2 className="text-minimal text-muted-foreground mb-4">ПОГОДА В КУРДЖИНОВО</h2>
+              <h3 className="text-4xl md:text-6xl font-light text-architectural">
+                Загрузка...
+              </h3>
+            </div>
+            <div className="bg-muted/30 rounded-3xl p-10 shadow-elegant animate-pulse">
+              <div className="flex items-center gap-6">
+                <div className="w-16 h-16 bg-muted-foreground/10 rounded-full" />
+                <div>
+                  <div className="h-10 w-28 bg-muted-foreground/10 rounded mb-2" />
+                  <div className="h-4 w-36 bg-muted-foreground/10 rounded" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   const current = data.current;

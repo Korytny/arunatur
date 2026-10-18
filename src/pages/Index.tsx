@@ -1,6 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
-import { WeatherWidget } from "@/components/WeatherWidget";
+// import { WeatherWidget } from "@/components/WeatherWidget";
 import Services from "@/components/Services";
 import About from "@/components/About";
 import AestheticCarousel from "@/components/AestheticCarousel";
@@ -28,7 +28,7 @@ const Index = () => {
       <AestheticCarousel />
       <Services />
       <Contact />
-      <WeatherWidget />
+      {/* <WeatherWidget /> */}
       <Footer />
     </div>
   );
